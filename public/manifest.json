@@ -1,0 +1,10 @@
+{
+  "name": "Her Beatles Universe",
+  "short_name": "Beatles",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5eee6",
+  "theme_color": "#3e080c",
+  "orientation": "any",
+  "icons": []
+}
