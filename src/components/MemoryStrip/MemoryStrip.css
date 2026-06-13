@@ -1,0 +1,36 @@
+.memory-strip-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 3s ease;
+}
+
+.memory-strip-container.fade-in {
+    opacity: 1;
+}
+
+.memory-strip {
+    display: flex;
+    flex-direction: column;
+    /* Increased gap significantly so memories drift gracefully instead of stacking */
+    gap: 300px;
+    padding-bottom: 300px; /* Exact gap ensures exactly a 50% loop mathematically */
+}
+
+.memory-strip.drifting {
+    animation-name: drift;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.memory-item-wrapper {
+    pointer-events: auto;
+}
+
+@keyframes drift {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+}

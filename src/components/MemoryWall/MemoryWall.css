@@ -1,0 +1,22 @@
+.memory-wall {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 1; /* Below hero */
+    pointer-events: none; 
+}
+
+.memory-wall-overlay {
+    position: absolute;
+    inset: 0;
+    /* 
+      Removed the heavy white fog. 
+      Replaced with an extremely subtle warm paper vignette that blends into the background corners. 
+      Uses sampled warm paper colours (#f5eee6, #f2ebe4, #f8f2ec) at very low opacities.
+    */
+    background: 
+        radial-gradient(circle at center, transparent 50%, rgba(245, 238, 230, 0.25) 100%),
+        linear-gradient(180deg, rgba(245, 238, 230, 0.7) 0%, transparent 10%, transparent 90%, rgba(242, 235, 228, 0.7) 100%);
+    z-index: 20;
+    pointer-events: none;
+}

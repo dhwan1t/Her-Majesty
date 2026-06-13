@@ -1,122 +1,94 @@
+import { useRef, useState, useEffect } from "react";
 import "./App.css";
-import { useEffect, useState, useRef } from "react";
+import Cursor from "./components/Cursor/Cursor";
+import MemoryWall from "./components/MemoryWall/MemoryWall";
+import Hero from "./components/Hero/Hero";
+import IntroSequence from "./components/IntroSequence/IntroSequence";
+import MusicPlayer from "./components/MusicPlayer/MusicPlayer";
+import ScrollPrompt from "./components/ScrollPrompt/ScrollPrompt";
+import ChapterThree from "./components/ChapterThree/ChapterThree";
 import introSong from "./assets/songs/using/hermaj-introfadein_[cut_27sec].mp3";
-import vinylFrame from "./assets/Image Frames/Vinyl Draft 4.png";
-import testPhoto1 from "./assets/Image Majesty/test1.jpg";
-
-import polaroidFrame from "./assets/Image Frames/Polaroid Draft 1.png";
-import testPhoto2 from "./assets/Image Majesty/test1.jpg";
-
 
 export default function App() {
-  const audioRef = useRef(null);
-  const [hasStarted, setHasStarted] = useState(false);
+  const musicPlayerRef = useRef(null);
 
-  const [mouse, setMouse] = useState({
-    x: 0,
-    y: 0,
-  });
-  const [position, setPosition] = useState({
-    x: 0,
-    y: 0,
-  });
+  // State progression: 
+  // "gift" -> "opening" -> "landing-entering" -> "landing" -> "music-playing" -> "music-finished" -> "scroll-prompt" -> "scroll-unlocked"
+  const [storyState, setStoryState] = useState("gift");
 
+  const handleAudioStart = () => {
+    musicPlayerRef.current?.play();
+    setStoryState("landing-entering");
+  };
+
+  const handleIntroComplete = () => {
+    // Intro unmounts, hero prepares to fade in
+    setStoryState("landing");
+    setTimeout(() => {
+      setStoryState("music-playing");
+    }, 2500);
+  };
+
+  const handleMusicEnded = () => {
+    setStoryState("music-finished");
+    
+    // Wait 1 second before showing the prompt
+    setTimeout(() => {
+      setStoryState("scroll-prompt");
+      
+      // Wait for the prompt to softly fade in before unlocking scroll
+      setTimeout(() => {
+        setStoryState("scroll-unlocked");
+      }, 4000); 
+    }, 1000);
+  };
+
+  // Only allow scrolling once we have reached the end of Chapter Two
   useEffect(() => {
-    const handleMove = (e) => {
-      // setPosition({
-      //   x: e.clientX,
-      //   y: e.clientY,
-      // });
-      setMouse({
-        x: e.clientX,
-        y: e.clientY,
-      });
-      if (!hasStarted && audioRef.current) {
-        setHasStarted(true);
-        audioRef.current.play();
-      }
-    };
-
-    window.addEventListener("mousemove", handleMove);
-
+    if (storyState === "scroll-unlocked") {
+      document.body.style.overflowY = "auto";
+    } else {
+      document.body.style.overflowY = "hidden";
+    }
+    
     return () => {
-      window.removeEventListener("mousemove", handleMove);
+      document.body.style.overflowY = "auto"; // Clean up just in case
     };
-  }, []);
+  }, [storyState]);
 
-  useEffect(() => {
-    let frameId;
-
-    const animate = () => {
-      setPosition((prev) => ({
-        x: prev.x + (mouse.x - prev.x) * 0.08,
-        y: prev.y + (mouse.y - prev.y) * 0.08,
-      }));
-
-      frameId = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    return () => cancelAnimationFrame(frameId);
-  }, [mouse]);
+  // Derived states to maintain component cleanliness
+  const isIntroActive = storyState === "gift" || storyState === "opening" || storyState === "landing-entering";
+  const isWallVisible = storyState !== "gift" && storyState !== "opening";
+  const isHeroVisible = storyState === "music-playing" || storyState === "music-finished" || storyState === "scroll-prompt" || storyState === "scroll-unlocked";
+  const isPromptVisible = storyState === "scroll-prompt" || storyState === "scroll-unlocked";
+  const isChapterThreeVisible = storyState === "scroll-unlocked" || storyState === "scroll-prompt"; // Pre-render underneath early
 
   return (
-    <main
-      className="landing"
-      onClick={() => {
-        audioRef.current.play();
-      }}
-    >
-      <div
-        className="cursor-star"
-        style={{ top: position.y, left: position.x }}
-      >
-        ✦
-      </div>
-
-      <div className="test-vinyl">
+    <main className="app-root">
+      <Cursor visible={!isIntroActive} />
       
-        <div className="vinyl-rotating">
-          <img
-            className="vinyl-frame"
-            src={vinylFrame}
-            alt=""
+      <MusicPlayer 
+        ref={musicPlayerRef} 
+        src={introSong} 
+        onEnded={handleMusicEnded} 
+      />
+
+      <section className="chapter-two-landing">
+        {isIntroActive && (
+          <IntroSequence 
+            onAudioStart={handleAudioStart} 
+            onComplete={handleIntroComplete} 
           />
-        </div>
-      
-        <img
-          className="vinyl-photo"
-          src={testPhoto1}
-          alt=""
-        />
-      </div>
+        )}
 
-      <div className="test-polaroid">
-      
-        <img
-          className="polaroid-photo"
-          src={testPhoto2}
-          alt=""
-        />
-      
-        <img
-          className="polaroid-frame"
-          src={polaroidFrame}
-          alt=""
-        />
-      
-      </div>
-
-      <section className="landing-content">
-        <p className="eyebrow">A place built for</p>
-
-        <h1 className="title">Her Majesty</h1>
-
-        <p className="subtitle">Somewhere between memory and music</p>
+        <MemoryWall visible={isWallVisible} />
+        <Hero visible={isHeroVisible} />
+        <ScrollPrompt visible={isPromptVisible} />
       </section>
 
-      <audio ref={audioRef} src={introSong} />
+      {/* Chapter 3 will sit below Chapter 2, revealed only when the user chooses to scroll */}
+      {isChapterThreeVisible && <ChapterThree />}
+      
     </main>
   );
 }

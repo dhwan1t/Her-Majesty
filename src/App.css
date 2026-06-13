@@ -1,210 +1,39 @@
 body {
     cursor: none;
+    margin: 0;
+    /* Default hidden, React toggles it */
+    overflow-x: hidden;
+    overflow-y: hidden;
+    background: #f2ebe4; 
 }
 
-.landing {
+.app-root {
+    width: 100vw;
+    position: relative;
+}
+
+.chapter-two-landing {
     width: 100vw;
     height: 100vh;
-
-    /*background: #f5eee6;*/
-
     background: linear-gradient(180deg, #f8f2ec 0%, #f5eee6 50%, #f2ebe4 100%);
     text-shadow:
         0 0 25px rgba(255, 182, 193, 0.35),
         0 0 60px rgba(255, 182, 193, 0.2);
-
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    overflow: hidden; /* Constrains the memory wall to this chapter alone */
 }
 
-.landing::before {
+.chapter-two-landing::before {
     content: "";
-
     position: absolute;
     inset: 0;
-
     background-image: url("./assets/grain.png");
     background-repeat: repeat;
     background-size: 500px;
-
     opacity: 0.2;
-
     pointer-events: none;
-}
-.landing {
-    position: relative;
-}
-
-.landing-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: "Cormorant Garamond", serif;
-    animation: fadein 2s ease-out;
-}
-
-.title {
-    font-size: clamp(4rem, 8vw, 5rem);
-    color: #3e080c;
-    animation: float_for_landing 10s ease-in-out infinite;
-    text-shadow: 0 0 10px rgba(255, 182, 193, 0.15);
-
-    position: relative;
-}
-
-.eyebrow {
-    font-size: 2rem;
-    color: #3e080c;
-    animation: float_for_landing 12s ease-in-out infinite;
-}
-
-.subtitle {
-    font-size: 2rem;
-    color: #3e080c;
-    animation: float_for_landing 14s ease-in-out infinite;
-}
-
-.cursor-star {
-    position: fixed;
-
-    left: 0;
-    top: 0;
-
-    pointer-events: none;
-
-    /*color: #3e080c;*/
-    color: #8b5d74;
-
-    font-size: 1.2rem;
-
-    z-index: 9999;
-
-    transform: translate(-50%, -50%);
-
-    text-shadow:
-        0 0 8px rgba(255, 182, 193, 0.5),
-        0 0 20px rgba(255, 182, 193, 0.25);
-
-    filter: drop-shadow(0 6px 12px rgba(62, 8, 12, 0.15));
-
-    transition: transform 0.15s ease;
-}
-
-@keyframes fadein {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes float_for_landing {
-    0% {
-        transform: translateY(0px) rotate(-0.2deg);
-    }
-
-    50% {
-        transform: translateY(-10px) rotate(0.2deg);
-    }
-
-    100% {
-        transform: translateY(0px) rotate(-0.2deg);
-    }
-}
-
-
-
-
-
-/* Test Vinyl !!*/
-@keyframes spinVinyl {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.test-vinyl {
-    position: absolute;
-    
-        left: 200px;
-        top: 200px;
-    
-        width: 170px;
-        height: 170px;
-}
-
-.vinyl-rotating {
-    position: absolute;
-    inset: 0;
-
-    animation: spinVinyl 12s linear infinite;
-}
-
-.vinyl-frame {
-    position: absolute;
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-    display: block;
-}
-
-.vinyl-photo {
-    position: absolute;
-
-    width: 52%;
-    height: 52%;
-
-    left: 50%;
-    top: 50%;
-
-    transform: translate(-50%, -50%);
-
-    border-radius: 50%;
-    object-fit: cover;
-
-    z-index: 5;
-}
-
-
-
-.test-polaroid {
-    position: absolute;
-
-    right: 220px;
-    top: 180px;
-
-    width: 180px;
-
-    aspect-ratio: 800 / 950;
-}
-
-.polaroid-photo {
-    position: absolute;
-
-    left: 5%;
-    top: 4.5%;
-
-    width: 90%;
-    height: 78%;
-
-    object-fit: cover;
-
-    z-index: 1;
-}
-
-.polaroid-frame {
-    position: absolute;
-
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    display: block;
-
-    z-index: 2;
-
-    pointer-events: none;
+    z-index: 50; /* Ensure grain stays on top of everything for nostalgic feel */
 }

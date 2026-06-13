@@ -1,0 +1,45 @@
+.memory-polaroid {
+    position: relative;
+    width: 180px;
+    aspect-ratio: 800 / 950;
+    transition: filter 0.3s ease;
+    filter: drop-shadow(4px 8px 12px rgba(62, 8, 12, 0.15));
+}
+
+.memory-polaroid:hover {
+    transform: scale(1.02) rotate(var(--start-tilt, 0deg)) !important;
+    filter: drop-shadow(8px 16px 20px rgba(62, 8, 12, 0.2));
+}
+
+@keyframes swayPolaroid {
+    0% { transform: rotate(var(--start-tilt)); }
+    50% { transform: rotate(var(--mid-tilt)); }
+    100% { transform: rotate(var(--start-tilt)); }
+}
+
+.memory-polaroid.sway {
+    animation-name: swayPolaroid;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+.polaroid-photo {
+    position: absolute;
+    left: 5%;
+    top: 4.5%;
+    width: 90%;
+    height: 78%;
+    object-fit: cover;
+    z-index: 1;
+    filter: sepia(0.1) contrast(1.05); /* Gentle nostalgic feel */
+}
+
+.polaroid-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 2;
+    pointer-events: none;
+}

@@ -1,0 +1,225 @@
+.intro-container {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(180deg, #f8f2ec 0%, #f5eee6 50%, #f2ebe4 100%);
+    transition: opacity 2s ease-in-out;
+}
+
+.intro-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.golden-light {
+    position: absolute;
+    width: 300px;
+    height: 100px;
+    background: radial-gradient(ellipse at center, rgba(255, 223, 137, 0.4) 0%, transparent 70%);
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 3s ease, transform 3s ease;
+    z-index: 101;
+    pointer-events: none;
+}
+
+.golden-light.glowing {
+    opacity: 1;
+    transform: translateY(20px) scale(1.5);
+}
+
+.gift-box {
+    position: relative;
+    width: 280px;
+    height: 200px;
+    cursor: pointer;
+    z-index: 102;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.gift-base {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 140px;
+    background: #e6dace;
+    border-radius: 4px;
+    box-shadow: 
+        inset -10px -10px 30px rgba(0,0,0,0.05),
+        0 10px 20px rgba(62, 8, 12, 0.1);
+    z-index: 104; /* Base stays above contents to hide them when rising */
+}
+
+.gift-lid {
+    position: absolute;
+    top: 40px;
+    left: -5px;
+    width: 290px;
+    height: 60px;
+    background: #eedfd2;
+    border-radius: 4px;
+    box-shadow: 0 5px 15px rgba(62, 8, 12, 0.1);
+    z-index: 106;
+    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: top center;
+}
+
+.gift-lid.lifted {
+    transform: translateY(-80px) rotateX(45deg);
+    opacity: 0;
+}
+
+.ribbon-vertical, .ribbon-vertical-base {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 100%;
+    background: #a44a4f;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+
+.ribbon-horizontal {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 30px;
+    background: #a44a4f;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+
+.ribbon-vertical.loose, .ribbon-horizontal.loose {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.gift-tag {
+    position: absolute;
+    right: -40px;
+    top: 70px;
+    width: 120px;
+    background: #fdfaf6;
+    padding: 15px;
+    border-radius: 2px;
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.08);
+    transform: rotate(10deg);
+    z-index: 107;
+    transition: transform 1s ease, opacity 1s ease;
+    border-left: 1px dashed #dcd0c5;
+}
+
+.gift-tag::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: -15px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #a44a4f;
+    border-radius: 50%;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    transform: rotate(45deg);
+}
+
+.gift-tag.falling {
+    transform: rotate(30deg) translateY(100px);
+    opacity: 0;
+}
+
+.handwritten {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    color: #4a3b32;
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.2;
+}
+.handwritten.name {
+    font-size: 1.4rem;
+    margin: 5px 0;
+    font-weight: 600;
+}
+
+/* Contents inside the box */
+.box-contents {
+    position: absolute;
+    inset: 0;
+    z-index: 103;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* contents start at the bottom */
+}
+
+.record-sleeve {
+    position: absolute;
+    bottom: 20px; /* Initially hidden behind base */
+    width: 200px;
+    height: 200px;
+    background: #f5eedf; /* Vintage cream paper */
+    border-radius: 2px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.05), 0 5px 15px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(120px);
+    transition: transform 2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.record-sleeve.rising {
+    transform: translateY(-80px);
+}
+
+.sleeve-label {
+    position: absolute;
+    top: 15px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: #5c4e43;
+    opacity: 0.6;
+}
+
+.sleeve-hole {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: #111; /* simulate dark inside */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: visible; /* Let the vinyl slide out */
+}
+
+.intro-vinyl {
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    transition: transform 1.5s ease-out;
+}
+
+.intro-vinyl.sliding {
+    transform: translateY(-100px); /* slides up out of sleeve */
+}
+
+@keyframes spinIntroVinyl {
+    from { transform: translateY(-100px) rotate(0deg); }
+    to { transform: translateY(-100px) rotate(360deg); }
+}
+
+.intro-vinyl.rotating {
+    animation: spinIntroVinyl 12s linear infinite;
+    animation-delay: 1.5s; /* Wait for sliding to finish */
+}
+
+.intro-vinyl img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}

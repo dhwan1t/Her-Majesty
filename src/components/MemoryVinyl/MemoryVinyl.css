@@ -1,0 +1,75 @@
+.memory-vinyl {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes spinVinyl {
+    from { transform: rotate(var(--start-deg, 0deg)); }
+    to { transform: rotate(var(--end-deg, 360deg)); }
+}
+
+.vinyl-rotating {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+}
+
+.vinyl-rotating.spin {
+    animation-name: spinVinyl;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.vinyl-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.vinyl-photo {
+    position: absolute;
+    width: 52%;
+    height: 52%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.vinyl-reflection {
+    position: absolute;
+    width: 52%;
+    height: 52%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0) 60%, rgba(255, 255, 255, 0.1) 100%);
+    z-index: 3;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+
+.vinyl-dust {
+    position: absolute;
+    width: 52%;
+    height: 52%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background-image: url("../../assets/grain.png");
+    background-size: 200px;
+    opacity: 0.15;
+    z-index: 4;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+}

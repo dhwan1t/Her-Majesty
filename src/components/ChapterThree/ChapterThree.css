@@ -1,0 +1,43 @@
+.chapter-three {
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(180deg, #f2ebe4 0%, #ecdac7 100%);
+    position: relative;
+    z-index: 10;
+    font-family: "Cormorant Garamond", serif;
+    color: #4a3b32;
+}
+
+.chapter-three-content {
+    text-align: center;
+    opacity: 0;
+    animation: fade-in-up 3s ease forwards;
+    animation-delay: 1s; /* Subtle wait after the user scrolls down */
+}
+
+.chapter-title {
+    font-size: 3rem;
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: 0.1em;
+}
+
+.chapter-subtitle {
+    font-size: 1.5rem;
+    font-style: italic;
+    margin-top: 20px;
+}
+
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
