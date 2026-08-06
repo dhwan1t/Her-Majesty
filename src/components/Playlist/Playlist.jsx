@@ -3,7 +3,7 @@ import "./Playlist.css";
 export default function Playlist({ songs, currentIndex, onSelect }) {
   return (
     <div className="playlist">
-      <h3 className="playlist-title">Our Memories</h3>
+      <h3 className="playlist-title">Hlo</h3>
 
       <div className="playlist-tracks">
         {songs.map((song, index) => {

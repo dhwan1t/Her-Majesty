@@ -94,7 +94,7 @@ export default function ChapterThree() {
       <div className="chapter-three-content">
 
         <div className="soundtrack-header">
-          <h2 className="chapter-title">Chapter III</h2>
+          <h2 className="chapter-title"></h2>
           <p className="chapter-subtitle">Your Soundtrack</p>
         </div>
 

@@ -33,8 +33,8 @@ export default function Letter() {
     <ChapterSection id="chapter-two-half" className="letter-chapter">
       <div className={`letter-container ${entered ? "entered" : ""}`} ref={sectionRef}>
 
-        <p className="letter-eyebrow">Chapter II½</p>
-        <h2 className="letter-title">A Letter.</h2>
+        <p className="letter-eyebrow"></p>
+        <h2 className="letter-title">another one of my random letters.</h2>
         <span className="letter-star" aria-hidden="true">✦</span>
 
         <article className="letter-paper">
