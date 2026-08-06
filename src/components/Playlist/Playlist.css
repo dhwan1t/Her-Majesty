@@ -1,0 +1,120 @@
+.playlist {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    flex: 1;
+    min-width: 0;
+}
+
+.playlist-title {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2.6rem;
+    color: #4a3b32;
+    margin: 0;
+    font-weight: 400;
+    border-bottom: 1px solid rgba(74, 59, 50, 0.2);
+    padding-bottom: 14px;
+}
+
+.playlist-tracks {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 4px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.playlist-tracks::-webkit-scrollbar {
+    display: none;
+}
+
+.playlist-track {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-family: "Cormorant Garamond", serif;
+    color: #4a3b32;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.playlist-track:hover {
+    background: rgba(74, 59, 50, 0.08);
+}
+
+.playlist-track.active {
+    background: rgba(62, 8, 12, 0.08);
+    color: #3e080c;
+}
+
+.track-indicator {
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #3e080c;
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.playlist-track.active .track-indicator {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.track-number {
+    width: 26px;
+    flex-shrink: 0;
+    font-style: italic;
+    font-size: 1.2rem;
+    text-align: right;
+    opacity: 0.75;
+}
+
+.track-name {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.track-title {
+    font-size: 1.45rem;
+    letter-spacing: 0.02em;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: font-size 0.2s ease, font-weight 0.2s ease;
+}
+
+.playlist-track.active .track-title {
+    font-size: 1.55rem;
+    font-weight: 600;
+}
+
+.track-artist {
+    font-style: normal;
+    font-size: 1.1rem;
+    color: #8b5d74;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.track-duration {
+    flex-shrink: 0;
+    font-size: 1.15rem;
+    font-style: italic;
+    opacity: 0.85;
+}

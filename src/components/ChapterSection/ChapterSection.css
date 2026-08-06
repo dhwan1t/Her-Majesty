@@ -1,0 +1,12 @@
+.chapter-section {
+    min-height: 100vh;
+    width: 100vw;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(180deg, #f2ebe4 0%, #ecdac7 100%);
+    font-family: "Cormorant Garamond", serif;
+    color: #4a3b32;
+    z-index: 10;
+}

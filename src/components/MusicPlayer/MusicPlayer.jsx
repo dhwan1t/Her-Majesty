@@ -1,44 +1,63 @@
-import { forwardRef, useImperativeHandle, useRef, useState, useEffect } from "react";
+import { createContext, useContext, useRef, useState, useEffect } from "react";
 
-const MusicPlayer = forwardRef(({ src, onEnded, onTimeUpdate }, ref) => {
+const MusicContext = createContext(null);
+
+export function MusicPlayerProvider({ children }) {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [currentTrack, setCurrentTrack] = useState(null);
 
-  useImperativeHandle(ref, () => ({
-    play: () => {
-      audioRef.current?.play().catch(err => console.error("Audio playback failed:", err));
-      setIsPlaying(true);
-    },
-    pause: () => {
-      audioRef.current?.pause();
+  const play = (trackSrc) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    
+    if (trackSrc && trackSrc !== currentTrack) {
+      audio.src = trackSrc;
+      setCurrentTrack(trackSrc);
+      audio.load();
+    }
+    
+    audio.play().then(() => setIsPlaying(true)).catch(err => console.error("Audio playback failed:", err));
+  };
+
+  const pause = () => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.pause();
       setIsPlaying(false);
-    },
-    stop: () => {
-      if (audioRef.current) {
-         audioRef.current.pause();
-         audioRef.current.currentTime = 0;
-         setIsPlaying(false);
-      }
-    },
-    seek: (time) => {
-      if (audioRef.current) audioRef.current.currentTime = time;
-    },
-    get duration() { return duration; },
-    get currentTime() { return audioRef.current?.currentTime || 0; }
-  }));
+    }
+  };
+
+  const stop = () => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+      setIsPlaying(false);
+      setCurrentTime(0);
+    }
+  };
+
+  const seek = (time) => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.currentTime = time;
+      setCurrentTime(time);
+    }
+  };
 
   useEffect(() => {
      const audio = audioRef.current;
      if (!audio) return;
 
-     const handleTimeUpdate = () => {
-         if (onTimeUpdate) onTimeUpdate(audio.currentTime);
-     };
+     const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
      const handleDurationChange = () => setDuration(audio.duration);
      const handleEnded = () => {
         setIsPlaying(false);
-        if (onEnded) onEnded();
+        // Dispatch global event so non-context or decoupled listeners can respond
+        window.dispatchEvent(new Event('music-ended'));
      };
 
      audio.addEventListener("timeupdate", handleTimeUpdate);
@@ -50,10 +69,22 @@ const MusicPlayer = forwardRef(({ src, onEnded, onTimeUpdate }, ref) => {
         audio.removeEventListener("durationchange", handleDurationChange);
         audio.removeEventListener("ended", handleEnded);
      };
-  }, [onEnded, onTimeUpdate]);
+  }, []);
 
-  return <audio ref={audioRef} src={src} style={{ display: 'none' }} />;
-});
+  const progress = duration > 0 ? currentTime / duration : 0;
 
-MusicPlayer.displayName = "MusicPlayer";
-export default MusicPlayer;
+  const value = {
+    play, pause, stop, seek, isPlaying, duration, currentTime, progress, currentTrack
+  };
+
+  return (
+    <MusicContext.Provider value={value}>
+      <audio ref={audioRef} style={{ display: 'none' }} />
+      {children}
+    </MusicContext.Provider>
+  );
+}
+
+export function useMusic() {
+  return useContext(MusicContext);
+}

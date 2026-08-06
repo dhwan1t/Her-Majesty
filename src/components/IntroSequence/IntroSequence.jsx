@@ -2,13 +2,16 @@ import { useState, useEffect } from "react";
 import "./IntroSequence.css";
 import vinylFrame from "../../assets/Image Frames/Vinyl Draft 4.png";
 
-export default function IntroSequence({ onAudioStart, onComplete }) {
+export default function IntroSequence({ onOpen, onReveal, onComplete }) {
   const [phase, setPhase] = useState("closed"); 
   // phases: 'closed' -> 'opening' -> 'sleeve-rising' -> 'vinyl-sliding' -> 'vinyl-rotating' -> 'fade-out'
 
   const handleOpen = () => {
     if (phase !== "closed") return;
-    
+
+    // Music begins the exact moment the gift is clicked.
+    onOpen();
+
     setPhase("opening");
 
     // Timeline matches CSS animations
@@ -22,13 +25,17 @@ export default function IntroSequence({ onAudioStart, onComplete }) {
 
     setTimeout(() => {
       setPhase("vinyl-rotating");
-      onAudioStart();
+      onReveal();
     }, 5000);
 
     setTimeout(() => {
       setPhase("fade-out");
+    }, 6000); 
+
+    // Allow the 1.2s cinematic CSS fade-out to finish entirely before unmounting the component
+    setTimeout(() => {
       onComplete();
-    }, 6000); // Trigger landing page crossfade
+    }, 7200);
   };
 
   return (
